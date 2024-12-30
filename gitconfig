@@ -1,5 +1,6 @@
 [user]
 	name = Byren Cheema
-	email = bscheema@uci.edu
+	email = cheemabyren@gmail.com 
 [alias]
 	lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
+
