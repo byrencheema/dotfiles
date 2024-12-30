@@ -1,0 +1,6 @@
+# sample .gitignore
+*.pem
+*.key
+*.env
+.DS_Store
+
