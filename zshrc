@@ -1,8 +1,12 @@
-# Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
-export PATH="$PATH:$HOME/.rvm/bin"
-export PATH="/opt/homebrew/opt/ruby/bin:$PATH"
-eval "$(rbenv init - zsh)"
-# >>> conda initialize >>>
+# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi
+
+# Path to your Oh My Zsh installation
+export ZSH="$HOME/.oh-my-zsh"
+
+# >>> Conda initialize >>>
 # !! Contents within this block are managed by 'conda init' !!
 __conda_setup="$('/opt/miniconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
 if [ $? -eq 0 ]; then
@@ -15,15 +19,29 @@ else
     fi
 fi
 unset __conda_setup
-# <<< conda initialize <<<
+# <<< Conda initialize <<<
 
-# Navigation
-alias dc='cd'
+# Ruby Version Manager
+export PATH="/opt/homebrew/opt/ruby/bin:$PATH"
+eval "$(rbenv init - zsh)"
 
-# Development
-alias dev='npm run dev'
+# Theme and Plugins
+ZSH_THEME="powerlevel10k/powerlevel10k"
+plugins=(git zsh-autosuggestions zsh-syntax-highlighting)
+bindkey '^F' autosuggest-accept
 
-# Utility
-alias ls='ls --color=auto -h'
+# Source Oh My Zsh framework
+source $ZSH/oh-my-zsh.sh
 
-PS1='%F{blue}%~ %(?.%F{green}.%F{red})%#%f '
+# Aliases
+alias glg='git log --graph --all --color' 
+
+# Functions
+function mkcd() {
+  mkdir -p "$1" && cd "$1"
+}
+
+# Prompt handled by Powerlevel10k
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
+alias vim="nvim"
