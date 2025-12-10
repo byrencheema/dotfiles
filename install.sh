@@ -1,110 +1,71 @@
 #!/bin/bash
 
 set -euo pipefail
-IFS=$'\n\t'
 
 echo "======================================"
-echo "          Setting Up Dotfiles         "
+echo "    Setting Up Fresh Dev Environment  "
 echo "======================================"
 
-# Define variables
-DOTFILES_DIR=~/dotfiles
-REPO_URL="https://github.com/yourusername/your-dotfiles-repo.git"
+DOTFILES_DIR="$HOME/dotfiles"
 
-# Check for required commands
-for cmd in git curl zsh; do
-    if ! command -v "$cmd" &> /dev/null; then
-        echo "Error: $cmd is not installed. Please install it and rerun the script."
-        exit 1
-    fi
-done
-
-# Detect package manager
-if command -v apt &> /dev/null; then
-    PACKAGE_MANAGER="apt"
-elif command -v yum &> /dev/null; then
-    PACKAGE_MANAGER="yum"
-elif command -v pacman &> /dev/null; then
-    PACKAGE_MANAGER="pacman"
-else
-    echo "Unsupported package manager. Please install dependencies manually."
+if [[ "$OSTYPE" != "darwin"* ]]; then
+    echo "Error: This script is designed for macOS only."
     exit 1
 fi
 
-# Function to install packages
-install_package() {
-    if [ "$PACKAGE_MANAGER" == "apt" ]; then
-        sudo apt update
-        sudo apt install -y "$1"
-    elif [ "$PACKAGE_MANAGER" == "yum" ]; then
-        sudo yum install -y "$1"
-    elif [ "$PACKAGE_MANAGER" == "pacman" ]; then
-        sudo pacman -Syu --noconfirm "$1"
+# install homebrew
+if ! command -v brew &> /dev/null; then
+    echo "Installing Homebrew..."
+    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+
+    if [[ $(uname -m) == "arm64" ]]; then
+        echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> ~/.zprofile
+        eval "$(/opt/homebrew/bin/brew shellenv)"
     fi
-}
-
-# Install Neovim
-if ! command -v nvim &> /dev/null; then
-    echo "Installing Neovim..."
-    install_package neovim
 else
-    echo "Neovim already installed."
+    echo "Homebrew already installed."
 fi
 
-# Install Tmux
-if ! command -v tmux &> /dev/null; then
-    echo "Installing Tmux..."
-    install_package tmux
+# install packages from brewfile
+if [ -f "$DOTFILES_DIR/Brewfile" ]; then
+    echo "Installing packages from Brewfile..."
+    brew bundle --file="$DOTFILES_DIR/Brewfile"
 else
-    echo "Tmux already installed."
+    echo "Warning: Brewfile not found. Skipping package installation."
 fi
 
-# Install Oh My Zsh
-if [ ! -d "$HOME/.oh-my-zsh" ]; then
-    echo "Installing Oh My Zsh..."
-    RUNZSH=no KEEP_ZSHRC=yes sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-else
-    echo "Oh My Zsh already installed."
-fi
+# create directories
+echo "Creating config directories..."
+mkdir -p ~/.config/helix
+mkdir -p ~/.config/karabiner
+mkdir -p ~/.config/ghostty
 
-# Install Powerlevel10k theme
-ZSH_CUSTOM="${ZSH_CUSTOM:-$HOME/.oh-my-zsh/custom}"
-if [ ! -d "$ZSH_CUSTOM/themes/powerlevel10k" ]; then
-    echo "Installing Powerlevel10k theme..."
-    git clone --depth=1 https://github.com/romkatv/powerlevel10k.git "$ZSH_CUSTOM/themes/powerlevel10k"
-else
-    echo "Powerlevel10k theme already installed."
-fi
+# symlink configs
+echo "Creating symlinks..."
 
-# Set Powerlevel10k as default Zsh theme
-if ! grep -q 'ZSH_THEME="powerlevel10k/powerlevel10k"' ~/.zshrc; then
-    echo 'Setting Zsh theme to Powerlevel10k...'
-    sed -i.bak 's/^ZSH_THEME=".*"/ZSH_THEME="powerlevel10k\/powerlevel10k"/' ~/.zshrc
-fi
-
-ln -sf "$DOTFILES_DIR/bash_profile" ~/.bash_profile
-ln -sf "$DOTFILES_DIR/bashrc" ~/.bashrc
-ln -sf "$DOTFILES_DIR/gitconfig" ~/.gitconfig
-ln -sf "$DOTFILES_DIR/tmux.conf" ~/.tmux.conf
-ln -sf "$DOTFILES_DIR/vimrc" ~/.vimrc
 ln -sf "$DOTFILES_DIR/zshrc" ~/.zshrc
 
-# Create Neovim config directory and link init.vim
-mkdir -p ~/.config/nvim
-ln -sf "$DOTFILES_DIR/vimrc" ~/.config/nvim/init.vim
-
-# Change default shell to zsh if not already
-if [ "$SHELL" != "$(which zsh)" ]; then
-    echo "Changing default shell to zsh..."
-    chsh -s "$(which zsh)"
+if [ -f "$DOTFILES_DIR/gitconfig" ]; then
+    ln -sf "$DOTFILES_DIR/gitconfig" ~/.gitconfig
 fi
 
-# Source Zsh configuration to apply changes
-echo "Sourcing ~/.zshrc..."
-source ~/.zshrc
+if [ -f "$DOTFILES_DIR/tmux.conf" ]; then
+    ln -sf "$DOTFILES_DIR/tmux.conf" ~/.tmux.conf
+fi
 
-echo "======================================"
-echo "    Dotfiles setup complete! 🚀"
-echo "======================================"
-echo "Please restart your terminal or log out and back in for all changes to take effect."
+ln -sf "$DOTFILES_DIR/config/starship.toml" ~/.config/starship.toml
+ln -sf "$DOTFILES_DIR/config/helix/config.toml" ~/.config/helix/config.toml
+ln -sf "$DOTFILES_DIR/config/karabiner/karabiner.json" ~/.config/karabiner/karabiner.json
+ln -sf "$DOTFILES_DIR/config/ghostty/config" ~/.config/ghostty/config
 
+echo ""
+echo "======================================"
+echo "    Setup Complete! 🚀"
+echo "======================================"
+echo ""
+echo "Next steps:"
+echo "  1. Restart your terminal or run: source ~/.zshrc"
+echo "  2. Open Ghostty terminal"
+echo "  3. Configure Git with your email:"
+echo "     git config --global user.email 'your@email.com'"
+echo ""

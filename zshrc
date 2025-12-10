@@ -1,47 +1,39 @@
-# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
-if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+# Directory navigation
+alias ..='cd ..'
+alias ...='cd ../..'
+alias ....='cd ../../..'
+alias .....='cd ../../../..'
+
+# ls aliases
+alias ls='ls -G'
+alias l='ls -lah'
+alias ll='ls -lh'
+alias la='ls -lAh'
+
+# Git aliases
+alias gaa='git add --all'
+alias gsta='git stash'
+alias gstp='git stash pop'
+alias gstc='git stash clear'
+alias gpv='git push --verbose'
+alias gp='git push'
+alias glog='git log --oneline --decorate --graph'
+alias glg='git log --stat'
+alias gst='git status'
+alias gb='git branch'
+alias gl='git pull'
+
+# Plugin configurations
+source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+
+# fzf - only load if installed
+if command -v fzf >/dev/null 2>&1; then
+  eval "$(fzf --zsh)"
 fi
 
-# Path to your Oh My Zsh installation
-export ZSH="$HOME/.oh-my-zsh"
+# Prompt - load near end
+eval "$(starship init zsh)"
 
-# >>> Conda initialize >>>
-# !! Contents within this block are managed by 'conda init' !!
-__conda_setup="$('/opt/miniconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
-if [ $? -eq 0 ]; then
-    eval "$__conda_setup"
-else
-    if [ -f "/opt/miniconda3/etc/profile.d/conda.sh" ]; then
-        . "/opt/miniconda3/etc/profile.d/conda.sh"
-    else
-        export PATH="/opt/miniconda3/bin:$PATH"
-    fi
-fi
-unset __conda_setup
-# <<< Conda initialize <<<
+# Syntax highlighting - must be loaded last
+source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
-# Ruby Version Manager
-export PATH="/opt/homebrew/opt/ruby/bin:$PATH"
-eval "$(rbenv init - zsh)"
-
-# Theme and Plugins
-ZSH_THEME="powerlevel10k/powerlevel10k"
-plugins=(git zsh-autosuggestions zsh-syntax-highlighting)
-bindkey '^F' autosuggest-accept
-
-# Source Oh My Zsh framework
-source $ZSH/oh-my-zsh.sh
-
-# Aliases
-alias glg='git log --graph --all --color' 
-
-# Functions
-function mkcd() {
-  mkdir -p "$1" && cd "$1"
-}
-
-# Prompt handled by Powerlevel10k
-[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
-
-alias vim="nvim"

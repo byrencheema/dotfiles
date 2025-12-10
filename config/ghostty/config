@@ -1,0 +1,19 @@
+# Ghostty Terminal Configuration
+
+# Theme
+theme = tokyonight
+
+# Font
+font-family = "FiraCode Nerd Font"
+font-size = 13
+
+# Window
+window-padding-x = 10
+window-padding-y = 10
+
+# Cursor
+cursor-style = block
+
+# Shell integration
+shell-integration = true
+shell-integration-features = cursor,sudo,title
