@@ -1,4 +1,3 @@
-brew "fnm"
 brew "fzf"
 brew "helix"
 brew "hyperfine"
