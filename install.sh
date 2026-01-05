@@ -53,7 +53,12 @@ if [ -f "$DOTFILES_DIR/tmux.conf" ]; then
     ln -sf "$DOTFILES_DIR/tmux.conf" ~/.tmux.conf
 fi
 
-ln -sf "$DOTFILES_DIR/config/starship.toml" ~/.config/starship.toml
+# install powerlevel10k
+if [ ! -d ~/powerlevel10k ]; then
+    echo "Installing Powerlevel10k..."
+    git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ~/powerlevel10k
+fi
+
 ln -sf "$DOTFILES_DIR/config/helix/config.toml" ~/.config/helix/config.toml
 ln -sf "$DOTFILES_DIR/config/karabiner/karabiner.json" ~/.config/karabiner/karabiner.json
 ln -sf "$DOTFILES_DIR/config/ghostty/config" ~/.config/ghostty/config

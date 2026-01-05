@@ -32,7 +32,7 @@ if command -v fzf >/dev/null 2>&1; then
 fi
 
 # Prompt - load near end
-eval "$(starship init zsh)"
+source ~/powerlevel10k/powerlevel10k.zsh-theme
 
 # Syntax highlighting - must be loaded last
 source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
