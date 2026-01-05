@@ -36,9 +36,9 @@ fi
 
 # create directories
 echo "Creating config directories..."
-mkdir -p ~/.config/helix
 mkdir -p ~/.config/karabiner
 mkdir -p ~/.config/ghostty
+mkdir -p ~/.config/nvim
 
 # symlink configs
 echo "Creating symlinks..."
@@ -59,9 +59,12 @@ if [ ! -d ~/powerlevel10k ]; then
     git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ~/powerlevel10k
 fi
 
-ln -sf "$DOTFILES_DIR/config/helix/config.toml" ~/.config/helix/config.toml
 ln -sf "$DOTFILES_DIR/config/karabiner/karabiner.json" ~/.config/karabiner/karabiner.json
 ln -sf "$DOTFILES_DIR/config/ghostty/config" ~/.config/ghostty/config
+
+# nvim/lazyvim - symlink entire directory
+rm -rf ~/.config/nvim
+ln -sf "$DOTFILES_DIR/config/nvim" ~/.config/nvim
 
 echo ""
 echo "======================================"

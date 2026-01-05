@@ -1,5 +1,4 @@
 brew "fzf"
-brew "helix"
 brew "hyperfine"
 brew "neovim"
 brew "node"
