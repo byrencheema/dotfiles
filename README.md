@@ -71,10 +71,10 @@ export GEMINI_API_KEY="..."
 
 the brewfile installs:
 - neovim, tmux, gh, htop
-- fzf, tree, hyperfine
+- fzf, tree
 - uv (python package manager)
 - node, yarn
-- sshuttle, session-manager-plugin
+- session-manager-plugin
 - ghostty, rectangle
 - docker-desktop
 - karabiner-elements
