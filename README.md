@@ -7,8 +7,8 @@ my macos dev environment
 terminal: ghostty
 theme: tokyo night
 shell: zsh
-prompt: starship
-editor: helix
+prompt: powerlevel10k
+editor: neovim (lazyvim)
 package manager: homebrew
 key remapping: karabiner
 
@@ -20,9 +20,9 @@ tokyo night - consistent color scheme across all tools, easy on the eyes
 
 zsh - default macos shell, good plugin ecosystem
 
-starship - fast rust-based prompt, cross-platform, easy config, shows git status and language versions
+powerlevel10k - fast prompt with instant prompt support, shows git status and language versions
 
-helix - modal editor like vim but built-in lsp support, no plugin needed, modern defaults, multiple cursors
+neovim + lazyvim - sane plugin defaults, built-in lsp, modal editing
 
 homebrew - standard macos package manager, everything i need is available
 
@@ -37,15 +37,14 @@ fzf - fuzzy finder for history search and file finding
 ## key features
 
 caps lock tap for escape, hold for control
-starship shows git branch, status, and language context
-helix has relative line numbers and bar cursor in insert mode
+powerlevel10k shows git branch, status, and language context
 tmux prefix remapped to ctrl-a, uses | and - for splits
 
 ## install
 
 clone this repo:
 ```
-git clone https://github.com/yourusername/dotfiles.git ~/dotfiles
+git clone https://github.com/byrencheema/dotfiles.git ~/dotfiles
 cd ~/dotfiles
 ```
 
@@ -59,19 +58,24 @@ restart terminal:
 source ~/.zshrc
 ```
 
-set git email:
+## secrets
+
+api keys and anything machine-specific go in `~/.zshrc.local`, which is sourced at
+the end of `zshrc` and is never committed:
+
 ```
-git config --global user.email "your@email.com"
+export GEMINI_API_KEY="..."
 ```
 
 ## what gets installed
 
 the brewfile installs:
-- helix, neovim, tmux, starship
+- neovim, tmux, gh, htop
 - fzf, tree, hyperfine
-- fnm (node version manager)
 - uv (python package manager)
-- awscli, sshuttle
+- node, yarn
+- sshuttle, session-manager-plugin
+- ghostty, rectangle
 - docker-desktop
 - karabiner-elements
 - fira code nerd font
@@ -86,10 +90,9 @@ dotfiles/
 ├── gitconfig
 ├── tmux.conf
 └── config/
-    ├── starship.toml
     ├── ghostty/config
-    ├── helix/config.toml
-    └── karabiner/karabiner.json
+    ├── karabiner/karabiner.json
+    └── nvim/
 ```
 
 ## aliases
@@ -97,11 +100,20 @@ dotfiles/
 navigation:
 - .. (cd ..)
 - ... (cd ../..)
+- mkcd (mkdir -p and cd into it)
 
 files:
 - l (ls -lah)
 - ll (ls -lh)
 - la (ls -lAh)
+
+editor:
+- vim (nvim)
+
+ai agents:
+- c (claude --dangerously-skip-permissions)
+- cc (claude --dangerously-skip-permissions --continue)
+- cx (codex --yolo)
 
 git:
 - gst (git status)
