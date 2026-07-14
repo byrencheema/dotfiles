@@ -17,6 +17,14 @@ alias l='ls -lah'
 alias ll='ls -lh'
 alias la='ls -lAh'
 
+# Editor
+alias vim='nvim'
+
+# AI agents
+alias c='claude --dangerously-skip-permissions'
+alias cc='claude --dangerously-skip-permissions --continue'
+alias cx='codex --yolo'
+
 # Git aliases
 alias gaa='git add --all'
 alias gsta='git stash'
@@ -29,6 +37,11 @@ alias glg='git log --stat'
 alias gst='git status'
 alias gb='git branch'
 alias gl='git pull'
+
+# Functions
+function mkcd() {
+  mkdir -p "$1" && cd "$1"
+}
 
 # Plugin configurations
 source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
@@ -46,4 +59,7 @@ source /opt/homebrew/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
+# Secrets and machine-local overrides - never committed
+[[ ! -f ~/.zshrc.local ]] || source ~/.zshrc.local
 
