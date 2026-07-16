@@ -88,6 +88,7 @@ dotfiles/
 ├── install.sh
 ├── Brewfile
 ├── zshrc
+├── aliases
 ├── gitconfig
 ├── tmux.conf
 └── config/
