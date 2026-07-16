@@ -1,3 +1,5 @@
 [user]
 	name = Byren Cheema
-	email = cheemabyren@gmail.com 
+	email = cheemabyren@gmail.com
+[init]
+	defaultBranch = main
