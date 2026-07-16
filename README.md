@@ -78,7 +78,6 @@ the brewfile installs:
 - ghostty, rectangle
 - docker-desktop
 - karabiner-elements
-- fira code nerd font
 
 ## repo structure
 
