@@ -78,6 +78,8 @@ the brewfile installs:
 - ghostty, rectangle
 - docker-desktop
 - karabiner-elements
+- google sans code (terminal font)
+- jetbrains mono nerd font (glyph icons only - google sans code has none)
 
 ## repo structure
 
