@@ -5,43 +5,8 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
-# Directory navigation
-alias ..='cd ..'
-alias ...='cd ../..'
-alias ....='cd ../../..'
-alias .....='cd ../../../..'
-
-# ls aliases
-alias ls='ls -G'
-alias l='ls -lah'
-alias ll='ls -lh'
-alias la='ls -lAh'
-
-# Editor
-alias vim='nvim'
-
-# AI agents
-alias c='claude --dangerously-skip-permissions'
-alias cc='claude --dangerously-skip-permissions --continue'
-alias cx='codex --yolo'
-
-# Git aliases
-alias gaa='git add --all'
-alias gsta='git stash'
-alias gstp='git stash pop'
-alias gstc='git stash clear'
-alias gpv='git push --verbose'
-alias gp='git push'
-alias glog='git log --oneline --decorate --graph'
-alias glg='git log --stat'
-alias gst='git status'
-alias gb='git branch'
-alias gl='git pull'
-
-# Functions
-function mkcd() {
-  mkdir -p "$1" && cd "$1"
-}
+# Aliases and shell functions
+[[ ! -f ~/.aliases ]] || source ~/.aliases
 
 # Plugin configurations
 source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh

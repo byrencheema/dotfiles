@@ -1,0 +1,129 @@
+# Directory navigation
+alias ..='cd ..'
+alias ...='cd ../..'
+alias ....='cd ../../..'
+alias .....='cd ../../../..'
+
+# ls
+alias ls='ls -G'
+alias l='ls -lah'
+alias ll='ls -lh'
+alias la='ls -lAh'
+
+# Editor
+alias vim='nvim'
+
+# AI agents
+alias c='claude --dangerously-skip-permissions'
+alias cc='claude --dangerously-skip-permissions --continue'
+alias cx='codex --yolo'
+
+# Git helpers (branch resolution, ported from oh-my-zsh)
+function __git_prompt_git() {
+  GIT_OPTIONAL_LOCKS=0 command git "$@"
+}
+
+function git_current_branch() {
+  local ref
+  ref=$(__git_prompt_git symbolic-ref --quiet HEAD 2>/dev/null)
+  local ret=$?
+  if [[ $ret != 0 ]]; then
+    [[ $ret == 128 ]] && return
+    ref=$(__git_prompt_git rev-parse --short HEAD 2>/dev/null) || return
+  fi
+  echo ${ref#refs/heads/}
+}
+
+function git_main_branch() {
+  command git rev-parse --git-dir &>/dev/null || return
+  local ref
+  for ref in refs/{heads,remotes/{origin,upstream}}/{main,trunk,mainline,default,stable,master}; do
+    if command git show-ref -q --verify $ref; then
+      echo ${ref:t}
+      return 0
+    fi
+  done
+  echo master
+  return 1
+}
+
+function git_develop_branch() {
+  command git rev-parse --git-dir &>/dev/null || return
+  local branch
+  for branch in dev devel develop development; do
+    if command git show-ref -q --verify refs/heads/$branch; then
+      echo $branch
+      return 0
+    fi
+  done
+  echo develop
+  return 1
+}
+
+# Git status / add
+alias gst='git status'
+alias gss='git status --short'
+alias ga='git add'
+alias gaa='git add --all'
+
+# Git commit
+alias gc='git commit --verbose'
+alias gca='git commit --verbose --all'
+alias gcam='git commit --all --message'
+
+# Git checkout / branch
+alias gco='git checkout'
+alias gcb='git checkout -b'
+alias gcm='git checkout $(git_main_branch)'
+alias gcd='git checkout $(git_develop_branch)'
+alias gb='git branch'
+alias gba='git branch --all'
+alias gbd='git branch --delete'
+alias gbD='git branch --delete --force'
+
+# Git push / pull / fetch
+alias gp='git push'
+alias 'gpf!'='git push --force'
+alias gpsup='git push --set-upstream origin $(git_current_branch)'
+alias gl='git pull'
+alias gpr='git pull --rebase'
+alias gf='git fetch'
+alias gfa='git fetch --all --prune'
+
+# Git diff / log
+alias gd='git diff'
+alias gds='git diff --staged'
+alias gdca='git diff --cached'
+alias gdw='git diff --word-diff'
+alias glog='git log --oneline --decorate --graph'
+alias glo='git log --oneline --decorate'
+alias glola='git log --graph --pretty="%Cred%h%Creset -%C(auto)%d%Creset %s %Cgreen(%ar) %C(bold blue)<%an>%Creset" --all'
+alias gfg='git ls-files | grep'
+
+# Git merge / rebase / reset / restore
+alias gm='git merge'
+alias gmom='git merge origin/$(git_main_branch)'
+alias grb='git rebase'
+alias grbi='git rebase --interactive'
+alias grbc='git rebase --continue'
+alias grba='git rebase --abort'
+alias grh='git reset'
+alias grhh='git reset --hard'
+alias grs='git restore'
+alias gcp='git cherry-pick'
+
+# Git stash
+alias gsta='git stash'
+alias gstp='git stash pop'
+alias gstd='git stash drop'
+alias gstl='git stash list'
+alias gstc='git stash clear'
+
+# Git wip
+alias gwip='git add -A; git rm $(git ls-files --deleted) 2>/dev/null; git commit --no-verify --no-gpg-sign --message "--wip-- [skip ci]"'
+alias gunwip='git rev-list --max-count=1 --format="%s" HEAD | grep -q "\--wip--" && git reset HEAD~1'
+
+# Functions
+function mkcd() {
+  mkdir -p "$1" && cd "$1"
+}

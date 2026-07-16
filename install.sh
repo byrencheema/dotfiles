@@ -44,6 +44,7 @@ mkdir -p ~/.config/nvim
 echo "Creating symlinks..."
 
 ln -sf "$DOTFILES_DIR/zshrc" ~/.zshrc
+ln -sf "$DOTFILES_DIR/aliases" ~/.aliases
 
 if [ -f "$DOTFILES_DIR/gitconfig" ]; then
     ln -sf "$DOTFILES_DIR/gitconfig" ~/.gitconfig
