@@ -4,7 +4,7 @@
 theme = tokyonight
 
 # Font
-font-family = "FiraCode Nerd Font"
+font-family = "Google Sans Code"
 font-size = 13
 
 # Window
