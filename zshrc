@@ -8,6 +8,11 @@ fi
 # Aliases and shell functions
 [[ ! -f ~/.aliases ]] || source ~/.aliases
 
+# Completion
+autoload -Uz compinit && compinit
+zstyle ":completion:*" matcher-list "m:{a-zA-Z}={A-Za-z}" "r:|=*" "l:|=* r:|=*"
+zstyle ":completion:*" menu select
+
 # Plugin configurations
 source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
 
