@@ -94,7 +94,38 @@ dotfiles/
 └── config/
     ├── ghostty/config
     ├── karabiner/karabiner.json
+    ├── corne/
     └── nvim/
+```
+
+## corne v4 keyboard
+
+split keyboard running vial firmware. the keymap lives on the board itself, so it works on any
+computer without vial installed. vial is only needed to edit it (or use vial.rocks in chrome).
+
+base layer:
+```
+ esc  q  w  e  r  t [opt]        [ctl] y  u  i  o  p  bksp
+ caps a  s  d  f  g [tab]        [sft] h  j  k  l  ;  '
+ shft z  x  c  v  b                    n  m  ,  .  /  del
+          fn  lower  space    enter  raise  cmd
+```
+
+- lower (hold): numbers on the top row, arrows on h j k l, f = ctrl+opt for rectangle
+- raise (hold): symbols
+- lower + raise (hold): f1-f12 on the top row (f11 on bksp, f12 on '), rgb on the left.
+  the esc position is QK_BOOT, which reboots the board into flashing mode
+- fn sends f18, and karabiner turns that into the mac fn/globe key
+- caps is escape on tap and control on hold, via karabiner
+
+karabiner ignores the corne by default because it reports as a keyboard and a mouse, so
+`karabiner.json` has a device entry that turns it on.
+
+back up or restore the keymap (close vial first):
+```
+cd ~/dotfiles/config/corne
+uv run corne.py dump
+uv run corne.py restore
 ```
 
 ## aliases

@@ -3,3 +3,4 @@
 *.env
 .DS_Store
 zshrc.local
+config/karabiner/automatic_backups/

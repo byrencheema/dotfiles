@@ -36,7 +36,6 @@ fi
 
 # create directories
 echo "Creating config directories..."
-mkdir -p ~/.config/karabiner
 mkdir -p ~/.config/ghostty
 mkdir -p ~/.config/nvim
 
@@ -60,7 +59,9 @@ if [ ! -d ~/powerlevel10k ]; then
     git clone --depth=1 https://github.com/romkatv/powerlevel10k.git ~/powerlevel10k
 fi
 
-ln -sf "$DOTFILES_DIR/config/karabiner/karabiner.json" ~/.config/karabiner/karabiner.json
+# karabiner replaces a symlinked karabiner.json with a plain file, so link the whole directory
+rm -rf ~/.config/karabiner
+ln -sf "$DOTFILES_DIR/config/karabiner" ~/.config/karabiner
 ln -sf "$DOTFILES_DIR/config/ghostty/config" ~/.config/ghostty/config
 
 # nvim/lazyvim - symlink entire directory
